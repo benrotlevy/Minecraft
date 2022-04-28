@@ -1,0 +1,110 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.tools-container {
+    height: 100%;
+    width: 15%;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.tool {
+    width: 6rem;
+    height: 3rem;
+    color: #ccc;
+    border: #ccc 1px solid;
+    margin: 1rem;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+.game-board-container {
+    width: 85%;
+    display: flex;
+    justify-content: center;
+    background-color: #ccc;
+}
+
+.game-board {
+    width: 100vmin;
+    height: 100vmin;
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+}
+
+.cell {
+    background-color: #0080FF;
+}
+
+.sky {
+    
+}
+
+.cloud {
+    background-color: white;
+}
+
+.grass {
+    background-color: green;
+}
+
+.rock {
+    background-color: gray;
+}
+
+.tree {
+
+}
+
+.leaves {
+    background-color: lightgreen;
+}
+
+.trunk {
+    background-color: rgb(42, 8, 8);
+}
+
+.dirt {
+    background-color: brown;
+}
+
+@media(max-width: 875px) {
+
+    .container {
+        flex-direction: column;
+    }
+
+    .tools-container {
+        height: 10%;
+        width: 100%;
+        flex-direction: row;
+    }
+
+    .game-board-container {
+        width: 100%;
+        height: 90%;
+    }
+
+    .game-board {
+        height: 100%;
+        width: 100%;
+    }
+}
