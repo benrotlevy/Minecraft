@@ -6,12 +6,12 @@ const gameMatrix = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0],
-    [0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0],
-    [0,0,2,2,2,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -21,22 +21,29 @@ const gameMatrix = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 ]
 
-
-// function createRock(gameMatrix) {
-//     for(let i=gameMatrix.length-1; i>=0; i--) {
-//         // console.log(gameMatrix[i]);
-//         if(gameMatrix[i][0] !== 1) {
-//             let random;
-//             // do {
-//             //     // console.log(1);
-//             //     random = Math.floor(Math.random * gameMatrix[i].length);
-//             // } while(gameMatrix[i][random] !== 0);
-//             random = Math.floor(Math.random() * gameMatrix[i].length);
-//             console.log(random);
-//             gameMatrix[i][random] = 3;
-//             break;
+// function createTree(gameMatrix, index, rowNum) {
+//     let trunkDraw = 2;
+//     let leavesDraw = 3;
+//     const newTable = [];
+//     for(let i=gameMatrix.length-1; i>= 0; i--) {
+//         let row = [...gameMatrix[i]]
+//         if(i > rowNum || i < rowNum - 5) {
+//             newTable.unshift(row);
+//         } else {
+//             if(trunkDraw) {
+//                 row[index] = 4;
+//                 trunkDraw--;
+//             } else if(leavesDraw) {
+//                 row[index] = 5;
+//                 row[index+1] = 5;
+//                 row[index-1] = 5;
+//                 leavesDraw--;
+//             }
+//             newTable.unshift(row);
 //         }
 //     }
+//     return newTable;
 // }
 
-// createRock(gameMatrix);
+// console.log(createTree(gameMatrix, 4, 11))
+

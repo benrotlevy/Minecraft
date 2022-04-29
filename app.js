@@ -7,12 +7,12 @@ const game = {
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -40,6 +40,54 @@ const game = {
 
 function isSky(row) {
     
+}
+
+
+function drawTree(gameMatrix, index, rowNum) {
+    let trunkDraw = 2;
+    let leavesDraw = 3;
+    const newTable = [];
+    for(let i=gameMatrix.length-1; i>= 0; i--) {
+        let row = [...gameMatrix[i]]
+        if(i > rowNum || i < rowNum - 5) {
+            newTable.unshift(row);
+        } else {
+            if(trunkDraw) {
+                row[index] = 4;
+                trunkDraw--;
+            } else if(leavesDraw) {
+                row[index] = 5;
+                row[index+1] = 5;
+                row[index-1] = 5;
+                leavesDraw--;
+            }
+            newTable.unshift(row);
+        }
+    }
+    return newTable;
+}
+
+function createTree(gameMatrix) {
+    const newTable = [];
+    let flag = false;
+    let random;
+    let rowStartDraw;
+    for(let i=gameMatrix.length-1; i>=0; i--) {
+        let row = [...gameMatrix[i]];
+        if(gameMatrix[i][0] !== 1 && flag === false) {
+            flag = true;
+            do {
+                random = Math.floor(Math.random() * row.length);
+            } while( !(isEmpty(row ,random)) || random === 0 || random === row.length-1);
+            row[random] = 4;
+            rowStartDraw = i-1;
+            newTable.unshift(row);
+        } else {
+            newTable.unshift(row);
+        }
+    }
+    console.log(newTable);
+    return drawTree(newTable, random, rowStartDraw);
 }
 
 function createGrass(gameMatrix) {
@@ -109,7 +157,8 @@ function isEmpty(row, num) {
 }
 
 function createTable(game) {
-    const tableWithGrass = createGrass(game.gameMatrix);
+    const tableWithTree = createTree(game.gameMatrix);
+    const tableWithGrass = createGrass(tableWithTree);
     const newTable = createRock(tableWithGrass, 2, 2);
     for(let i=0; i<newTable.length; i++) {
         for(let j=0; j<newTable[i].length; j++) {
@@ -117,11 +166,11 @@ function createTable(game) {
             cell.classList.add("cell", elementIndex(newTable[i][j]));
             game.gameBoard.appendChild(cell);
             cell.addEventListener("mousedown", cellEvent);
-            cell.addEventListener("pointerup", cellEvent);
+            // cell.addEventListener("pointerup", cellEvent);
             cell.addEventListener("touchstart", cellEvent);
             cell.addEventListener("mouseup", cellMouseUpEvent);
             cell.addEventListener("touchend", cellMouseUpEvent);
-            cell.addEventListener("pointerdown", cellMouseUpEvent);
+            // cell.addEventListener("pointerdown", cellMouseUpEvent);
         }   
     }
 }
