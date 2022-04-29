@@ -34,7 +34,8 @@ const game = {
     isShovel: false,
     isAxe: false,
     isInventory: false,
-    inventoryType: ""
+    inventoryType: "",
+    isError: false
 }
 
 function createTable(game) {
@@ -43,9 +44,30 @@ function createTable(game) {
             const cell = document.createElement("div");
             cell.classList.add("cell", elementIndex(game.gameMatrix[i][j]));
             game.gameBoard.appendChild(cell);
-            // drawElement(cell, game.gameMatrix[i][j]);
-            cell.addEventListener("click", cellEvent);
+            cell.addEventListener("mousedown", cellEvent);
+            cell.addEventListener("mouseup", cellMouseUpEvent);
         }   
+    }
+}
+
+function cellMouseUpEvent(event) {
+    if(game.isError) {
+        if(game.isInventory) {
+            game.inventory.classList.remove("error");
+            game.isError = false;
+        }
+        if(game.isPickaxe) {
+            game.pickaxe.classList.remove("error");
+            game.isError = false;
+        }
+        if(game.isShovel) {
+            game.shovel.classList.remove("error");
+            game.isError = false;
+        }
+        if(game.isAxe) {
+            game.axe.classList.remove("error");
+            game.isError = false;
+        }
     }
 }
 
@@ -55,38 +77,56 @@ function cellEvent(event) {
             this.classList.add(game.inventoryType);
             game.inventory.classList.remove(game.inventoryType);
             game.inventoryType = "";
+        } else {
+            game.isError = true;
+            game.inventory.classList.add("error");
         }
     } else {
-        if(this.classList.contains("dirt") && game.isShovel) {
-            this.classList.remove("dirt");
-            if(game.inventoryType) game.inventory.classList.remove(game.inventoryType);
-            game.inventoryType = "dirt";
-            game.inventory.classList.add("dirt")
-        }
-        if(this.classList.contains("rock") && game.isPickaxe) {
-            this.classList.remove("rock");
-            if(game.inventoryType) game.inventory.classList.remove(game.inventoryType);
-            game.inventoryType = "rock";
-            game.inventory.classList.add("rock")
-        }
-        if((this.classList.contains("grass") || this.classList.contains("trunk") || this.classList.contains("leaves")) && game.isAxe) {
-            if(this.classList.contains("grass")) {
-                this.classList.remove("grass");
+        if(game.isShovel) {
+            if(this.classList.contains("dirt")) {
+                this.classList.remove("dirt");
                 if(game.inventoryType) game.inventory.classList.remove(game.inventoryType);
-                game.inventoryType = "grass";
-                game.inventory.classList.add("grass")
+                game.inventoryType = "dirt";
+                game.inventory.classList.add("dirt")
+            } else {
+                game.isError = true;
+                game.shovel.classList.add("error");
             }
-            if(this.classList.contains("leaves")) {
-                this.classList.remove("leaves");
+        }
+        if(game.isPickaxe) {
+            if(this.classList.contains("rock")) {
+                this.classList.remove("rock");
                 if(game.inventoryType) game.inventory.classList.remove(game.inventoryType);
-                game.inventoryType = "leaves";
-                game.inventory.classList.add("leaves")
+                game.inventoryType = "rock";
+                game.inventory.classList.add("rock") 
+            } else {
+                game.isError = true;
+                game.pickaxe.classList.add("error");
             }
-            if(this.classList.contains("trunk")) {
-                this.classList.remove("trunk");
-                if(game.inventoryType) game.inventory.classList.remove(game.inventoryType);
-                game.inventoryType = "trunk";
-                game.inventory.classList.add("trunk")
+        }
+        if(game.isAxe) {
+            if(this.classList.contains("grass") || this.classList.contains("trunk") || this.classList.contains("leaves")) {
+                if(this.classList.contains("grass")) {
+                    this.classList.remove("grass");
+                    if(game.inventoryType) game.inventory.classList.remove(game.inventoryType);
+                    game.inventoryType = "grass";
+                    game.inventory.classList.add("grass")
+                }
+                if(this.classList.contains("leaves")) {
+                    this.classList.remove("leaves");
+                    if(game.inventoryType) game.inventory.classList.remove(game.inventoryType);
+                    game.inventoryType = "leaves";
+                    game.inventory.classList.add("leaves")
+                }
+                if(this.classList.contains("trunk")) {
+                    this.classList.remove("trunk");
+                    if(game.inventoryType) game.inventory.classList.remove(game.inventoryType);
+                    game.inventoryType = "trunk";
+                    game.inventory.classList.add("trunk")
+                }
+            } else {
+                game.isError = true;
+                game.axe.classList.add("error");
             }
         }
     }

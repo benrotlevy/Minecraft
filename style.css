@@ -30,6 +30,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    /* transition: all ease-in-out 1s; */
 }
 
 .logo {
@@ -59,7 +60,7 @@ body {
     width: 4rem;
     height: 4rem;
     color: #ccc;
-    border: #ccc 1px solid;
+    border: #ccc 3px solid;
     margin: 1rem;
     padding: 1rem 0;
     text-align: center;
@@ -70,14 +71,14 @@ body {
     margin: 1rem;
     width: 3rem;
     height: 3rem;
-    border: #ccc 1px solid;
+    border: #ccc 3px solid;
     cursor: pointer;
 }
 
 .reset-btn {
     color: white;
     padding: 1rem 2rem;
-    border: #ccc 1px solid;
+    border: #ccc 3px solid;
     margin: 3rem;
     font-size: 1rem;
     cursor: pointer;
@@ -145,13 +146,24 @@ body {
 }
 
 .pickaxe {
-    background: url(./img/pickaxe.jpg) center center/cover;
+    background: url(./img/new-design-designify.png) center center/cover;
+    /* filter: opacity(0.8) drop-shadow(0 0 0 black); */
 }
+.pickaxe img {
+    width: 100%;
+    height: 100%;
+}
+
 .axe {
     background: url(./img/axe.png) center center/cover;
 }
+
 .shovel {
     background: url(./img/shoval.jpg) center center/cover;
+}
+
+.error {
+    border-color: red !important;
 }
 
 @media(max-width: 1200px) {
