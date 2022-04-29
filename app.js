@@ -11,8 +11,8 @@ const game = {
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0],
-        [0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0],
-        [0,0,2,2,2,0,0,0,0,0,0,0,3,3,0,4,0,0,0,3],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -38,16 +38,90 @@ const game = {
     isError: false
 }
 
+function isSky(row) {
+    
+}
+
+function createGrass(gameMatrix) {
+    const newTable = [];
+    let flag = 2;
+    let random;
+    for(let i=gameMatrix.length-1; i>=0; i--) {
+        let row = [...gameMatrix[i]];
+        if(gameMatrix[i][0] !== 1 && flag === 2) {
+            do {
+                random = Math.floor(Math.random() * row.length);
+            } while( !(isEmpty(row ,random)) || !(isEmpty(row ,random+1)) || !(isEmpty(row ,random-1)));
+            row[random] = 2;
+            row[random+1] = 2;
+            row[random-1] = 2;
+            newTable.unshift(row);
+            flag--;
+        } else if(flag === 1) {
+            row[random] = 2;
+            newTable.unshift(row);
+            flag--;
+        } else {
+            newTable.unshift(row);
+        }
+    }
+    return newTable;
+}
+
+function createRock(gameMatrix, num, size) {
+    const newTable = [];
+    let flag = false;
+    for(let i=gameMatrix.length-1; i>=0; i--) {
+        if(gameMatrix[i][0] !== 1 && !flag) {
+            let row = [...gameMatrix[i]];
+            while(num > 0) {
+                num--;
+                let random;
+                if(size) {
+                    do {
+                        random = Math.floor(Math.random() * row.length);
+                    } while(!(isEmpty(row ,random)) || (!(isEmpty(row ,random+1)) && !(isEmpty(row ,random-1))));
+                    row[random] = 3;
+                    if(isEmpty(row ,random+1)) {
+                        row[random+1] = 3;
+                    } else if(isEmpty(row ,random-1)) {
+                        row[random-1] = 3;
+                    }
+                    size = false;
+                } else {
+                    do {
+                        random = Math.floor(Math.random() * row.length);
+                    } while(!(isEmpty(row ,random)));
+                    row[random] = 3;
+                }
+            }
+            newTable.unshift(row);
+            flag = true;
+        } else {
+            newTable.unshift(gameMatrix[i]);
+        }
+    }
+    return newTable;
+}
+
+function isEmpty(row, num) {
+    return row[num] === 0;
+}
+
 function createTable(game) {
-    for(let i=0; i<game.gameMatrix.length; i++) {
-        for(let j=0; j<game.gameMatrix[i].length; j++) {
+    const tableWithGrass = createGrass(game.gameMatrix);
+    const newTable = createRock(tableWithGrass, 2, 2);
+    for(let i=0; i<newTable.length; i++) {
+        for(let j=0; j<newTable[i].length; j++) {
             const cell = document.createElement("div");
-            cell.classList.add("cell", elementIndex(game.gameMatrix[i][j]));
+            cell.classList.add("cell", elementIndex(newTable[i][j]));
             game.gameBoard.appendChild(cell);
             cell.addEventListener("mousedown", cellEvent);
+            cell.addEventListener("pointerup", cellEvent);
             cell.addEventListener("touchstart", cellEvent);
             cell.addEventListener("mouseup", cellMouseUpEvent);
             cell.addEventListener("touchend", cellMouseUpEvent);
+            cell.addEventListener("pointerdown", cellMouseUpEvent);
         }   
     }
 }
@@ -218,3 +292,4 @@ function deleteTable() {
 }
 
 createTable(game);
+
