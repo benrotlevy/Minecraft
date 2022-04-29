@@ -25,6 +25,7 @@ const game = {
     gameBoard : document.querySelector(".game-board"),
     startBtn : document.querySelector(".btn-start"),
     homePage : document.querySelector(".home"),
+    resetBtn : document.querySelector(".reset-btn"),
     pickaxe : document.querySelector(".pickaxe"),
     shovel : document.querySelector(".shovel"),
     axe : document.querySelector(".axe"),
@@ -133,6 +134,7 @@ game.pickaxe.addEventListener("click", function(event) {
     this.style.borderColor = "blue";
     game.shovel.style.borderColor = "";
     game.axe.style.borderColor = "";
+    game.inventory.style.borderColor = "";
 });
 
 game.shovel.addEventListener("click", function(event) {
@@ -143,6 +145,7 @@ game.shovel.addEventListener("click", function(event) {
     this.style.borderColor = "blue";
     game.pickaxe.style.borderColor = "";
     game.axe.style.borderColor = "";
+    game.inventory.style.borderColor = "";
 });
 
 game.axe.addEventListener("click", function(event) {
@@ -153,6 +156,23 @@ game.axe.addEventListener("click", function(event) {
     this.style.borderColor = "blue";
     game.shovel.style.borderColor = "";
     game.pickaxe.style.borderColor = "";
+    game.inventory.style.borderColor = "";
 });
+
+game.resetBtn.addEventListener("click", function(event) {
+    deleteTable();
+    createTable(game);
+    if(game.inventoryType) {
+        game.inventory.classList.remove(game.inventoryType);
+        game.inventoryType = "";
+        game.isInventory = false;
+        game.inventory.style.borderColor = "";
+    }
+})
+
+function deleteTable() {
+    const cells = document.querySelectorAll(".cell");
+    cells.forEach(cell => cell.remove());
+}
 
 createTable(game);
