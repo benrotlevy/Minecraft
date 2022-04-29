@@ -45,9 +45,9 @@ function createTable(game) {
             cell.classList.add("cell", elementIndex(game.gameMatrix[i][j]));
             game.gameBoard.appendChild(cell);
             cell.addEventListener("mousedown", cellEvent);
-            cell.addEventListener("pointerdown", cellEvent);
+            cell.addEventListener("touchstart", cellEvent);
             cell.addEventListener("mouseup", cellMouseUpEvent);
-            cell.addEventListener("pointerup", cellMouseUpEvent);
+            cell.addEventListener("touchend", cellMouseUpEvent);
         }   
     }
 }
