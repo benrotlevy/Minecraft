@@ -45,30 +45,10 @@ function createTable(game) {
             cell.classList.add("cell", elementIndex(game.gameMatrix[i][j]));
             game.gameBoard.appendChild(cell);
             cell.addEventListener("mousedown", cellEvent);
+            cell.addEventListener("pointerdown", cellEvent);
             cell.addEventListener("mouseup", cellMouseUpEvent);
-            cell.addEventListener("pointerup", cellPointerUpEvent);
+            cell.addEventListener("pointerup", cellMouseUpEvent);
         }   
-    }
-}
-
-function cellPointerUpEvent(event) {
-    if(game.isError) {
-        if(game.isInventory) {
-            game.inventory.classList.remove("error");
-            game.isError = false;
-        }
-        if(game.isPickaxe) {
-            game.pickaxe.classList.remove("error");
-            game.isError = false;
-        }
-        if(game.isShovel) {
-            game.shovel.classList.remove("error");
-            game.isError = false;
-        }
-        if(game.isAxe) {
-            game.axe.classList.remove("error");
-            game.isError = false;
-        }
     }
 }
 
