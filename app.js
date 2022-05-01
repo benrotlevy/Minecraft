@@ -63,8 +63,9 @@ function drawDirt(gameMatrix) {
 
 function drawTree(gameMatrix, index, rowNum) {
     let random = Math.floor(Math.random() * 4);
+    let random2 = Math.floor(Math.random() * 3);
     let trunkDraw = 1 + random;
-    let leavesDraw = 3;
+    let leavesDraw = 3 + random2;
     const newTable = [];
     for(let i=gameMatrix.length-1; i>= 0; i--) {
         let row = [...gameMatrix[i]]
