@@ -13,10 +13,10 @@ const game = {
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
@@ -42,14 +42,30 @@ function isSky(row) {
     
 }
 
+function drawDirt(gameMatrix) {
+    const newTable = [];
+    let random = Math.floor(Math.random() * 3 +1);
+    for(let i=gameMatrix.length-1; i>= 0; i--) {
+        let row = [...gameMatrix[i]]
+        if(row[0] !== 1 && random > 0) {
+            row.forEach((e, i, arr) => arr[i] = 1);
+            newTable.unshift(row);
+            random--;
+        } else {
+            newTable.unshift(row);
+        }
+    }
+    return newTable;
+}
 
 function drawTree(gameMatrix, index, rowNum) {
-    let trunkDraw = 2;
+    let random = Math.floor(Math.random() * 4);
+    let trunkDraw = 1 + random;
     let leavesDraw = 3;
     const newTable = [];
     for(let i=gameMatrix.length-1; i>= 0; i--) {
         let row = [...gameMatrix[i]]
-        if(i > rowNum || i < rowNum - 5) {
+        if(i > rowNum ) {
             newTable.unshift(row);
         } else {
             if(trunkDraw) {
@@ -78,7 +94,7 @@ function createTree(gameMatrix) {
             flag = true;
             do {
                 random = Math.floor(Math.random() * row.length);
-            } while( !(isEmpty(row ,random)) || random === 0 || random === row.length-1);
+            } while( (!(isEmpty(row ,random)) || random === 0 || random === row.length-1) || row[random+1] === 4 || row[random+2] === 4 || row[random-1] === 4 || row[random-2]);
             row[random] = 4;
             rowStartDraw = i-1;
             newTable.unshift(row);
@@ -86,7 +102,6 @@ function createTree(gameMatrix) {
             newTable.unshift(row);
         }
     }
-    console.log(newTable);
     return drawTree(newTable, random, rowStartDraw);
 }
 
@@ -156,10 +171,23 @@ function isEmpty(row, num) {
     return row[num] === 0;
 }
 
+function randomizeNumOfTrees(gameMatrix, numOfTrees) {
+    let newTable = gameMatrix;
+    let num = Math.floor(Math.random() * numOfTrees +1);
+    while (num > 0) {
+        const tableWithTree = createTree(newTable);
+        newTable = tableWithTree
+        num--;
+    }
+    return newTable;
+}
+
 function createTable(game) {
-    const tableWithTree = createTree(game.gameMatrix);
+    let randomTimes = Math.floor(Math.random() * 5 + 2);
+    const tableWithDirt = drawDirt(game.gameMatrix)
+    const tableWithTree = randomizeNumOfTrees(tableWithDirt, 4);
     const tableWithGrass = createGrass(tableWithTree);
-    const newTable = createRock(tableWithGrass, 2, 2);
+    const newTable = createRock(tableWithGrass, randomTimes, 2);
     for(let i=0; i<newTable.length; i++) {
         for(let j=0; j<newTable[i].length; j++) {
             const cell = document.createElement("div");
