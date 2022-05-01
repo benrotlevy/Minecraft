@@ -34,7 +34,10 @@ const game = {
     isShovel: false,
     isAxe: false,
     isInventory: false,
-    inventoryType: "",
+    // inventoryType: "",
+    inventoryLength: 0,
+    inventoryTypes: [],
+    inventoryNums: document.getElementById("list"),
     isError: false
 }
 
@@ -225,11 +228,14 @@ function cellMouseUpEvent(event) {
 }
 
 function cellEvent(event) {
-    if(game.isInventory && game.inventoryType) {
+    if(game.isInventory && game.inventoryLength > 0) { 
         if(!(this.classList.contains("grass") || this.classList.contains("trunk") || this.classList.contains("leaves") || this.classList.contains("rock") || this.classList.contains("dirt"))) {
-            this.classList.add(game.inventoryType);
-            game.inventory.classList.remove(game.inventoryType);
-            game.inventoryType = "";
+            this.classList.add(game.inventoryTypes[0]);
+            game.inventory.classList.remove(game.inventoryTypes[0]);
+            game.inventoryTypes.shift();
+            game.inventoryLength -= 1;
+            game.inventoryNums.innerText = game.inventoryLength;
+            if(game.inventoryTypes[0]) game.inventory.classList.add(game.inventoryTypes[0]);
         } else {
             game.isError = true;
             game.inventory.classList.add("error");
@@ -238,9 +244,11 @@ function cellEvent(event) {
         if(game.isShovel) {
             if(this.classList.contains("dirt")) {
                 this.classList.remove("dirt");
-                if(game.inventoryType) game.inventory.classList.remove(game.inventoryType);
-                game.inventoryType = "dirt";
-                game.inventory.classList.add("dirt")
+                if(game.inventoryTypes[0]) game.inventory.classList.remove(game.inventoryTypes[0]);
+                game.inventoryTypes.unshift("dirt");
+                game.inventoryLength += 1;
+                game.inventoryNums.innerText = game.inventoryLength;
+                game.inventory.classList.add("dirt");
             } else {
                 game.isError = true;
                 game.shovel.classList.add("error");
@@ -249,8 +257,10 @@ function cellEvent(event) {
         if(game.isPickaxe) {
             if(this.classList.contains("rock")) {
                 this.classList.remove("rock");
-                if(game.inventoryType) game.inventory.classList.remove(game.inventoryType);
-                game.inventoryType = "rock";
+                if(game.inventoryTypes[0]) game.inventory.classList.remove(game.inventoryTypes[0]);
+                game.inventoryTypes.unshift("rock");
+                game.inventoryLength += 1;
+                game.inventoryNums.innerText = game.inventoryLength;
                 game.inventory.classList.add("rock") 
             } else {
                 game.isError = true;
@@ -261,21 +271,27 @@ function cellEvent(event) {
             if(this.classList.contains("grass") || this.classList.contains("trunk") || this.classList.contains("leaves")) {
                 if(this.classList.contains("grass")) {
                     this.classList.remove("grass");
-                    if(game.inventoryType) game.inventory.classList.remove(game.inventoryType);
-                    game.inventoryType = "grass";
-                    game.inventory.classList.add("grass")
+                    if(game.inventoryTypes[0]) game.inventory.classList.remove(game.inventoryTypes[0]);
+                    game.inventoryTypes.unshift("grass");
+                    game.inventoryLength += 1;
+                    game.inventoryNums.innerText = game.inventoryLength;
+                    game.inventory.classList.add("grass");
                 }
                 if(this.classList.contains("leaves")) {
                     this.classList.remove("leaves");
-                    if(game.inventoryType) game.inventory.classList.remove(game.inventoryType);
-                    game.inventoryType = "leaves";
-                    game.inventory.classList.add("leaves")
+                    if(game.inventoryTypes[0]) game.inventory.classList.remove(game.inventoryTypes[0]);
+                    game.inventoryTypes.unshift("leaves");
+                    game.inventoryLength += 1;
+                    game.inventoryNums.innerText = game.inventoryLength;
+                    game.inventory.classList.add("leaves");
                 }
                 if(this.classList.contains("trunk")) {
                     this.classList.remove("trunk");
-                    if(game.inventoryType) game.inventory.classList.remove(game.inventoryType);
-                    game.inventoryType = "trunk";
-                    game.inventory.classList.add("trunk")
+                    if(game.inventoryTypes[0]) game.inventory.classList.remove(game.inventoryTypes[0]);
+                    game.inventoryTypes.unshift("trunk");
+                    game.inventoryLength += 1;
+                    game.inventoryNums.innerText = game.inventoryLength;
+                    game.inventory.classList.add("trunk");
                 }
             } else {
                 game.isError = true;
@@ -303,7 +319,7 @@ function elementIndex(num) {
 };
 
 game.inventory.addEventListener("click", function(event) {
-    if(game.inventoryType) {
+    if(game.inventoryTypes[0]) {
         game.isAxe = false;
         game.isPickaxe = false;
         game.isShovel = false;
@@ -355,9 +371,11 @@ game.axe.addEventListener("click", function(event) {
 game.resetBtn.addEventListener("click", function(event) {
     deleteTable();
     createTable(game);
-    if(game.inventoryType) {
-        game.inventory.classList.remove(game.inventoryType);
-        game.inventoryType = "";
+    if(game.inventoryTypes[0]) {
+        game.inventory.classList.remove(game.inventoryTypes[0]);
+        game.inventoryTypes = [];
+        game.inventoryLength = 0;
+        game.inventoryNums.innerText = game.inventoryLength;
         game.isInventory = false;
         game.inventory.style.borderColor = "";
     }
