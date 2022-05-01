@@ -169,7 +169,11 @@ body {
 @media(max-width: 1200px) {
 
     html {
-        font-size: 10px
+        font-size: 8px
+    }
+
+    body {
+        height: 97vh;
     }
 
     .container {
