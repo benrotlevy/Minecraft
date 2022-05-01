@@ -169,11 +169,13 @@ body {
 @media(max-width: 1200px) {
 
     html {
-        font-size: 8px
+        font-size: 8px;
+        height: -webkit-fill-available;
     }
 
     body {
-        height: 97vh;
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
     }
 
     .container {
