@@ -204,7 +204,9 @@ function createTable(game) {
             // cell.addEventListener("pointerdown", cellMouseUpEvent);
         }   
     }
-    document.body.scrollTop = document.body.scrollHeight;
+    if(window.outerHeight < window.getComputedStyle(document.body).height) {
+        document.body.style = window.outerHeight;
+    }
 }
 
 function cellMouseUpEvent(event) {
