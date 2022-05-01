@@ -184,6 +184,7 @@ body {
         height: 10%;
         width: 100%;
         flex-direction: row;
+        justify-content: space-around;
     }
 
     .home {
