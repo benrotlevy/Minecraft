@@ -170,12 +170,10 @@ body {
 
     html {
         font-size: 8px;
-        height: -webkit-fill-available;
     }
 
     body {
-        min-height: 100vh;
-        min-height: -webkit-fill-available;
+        height: 100vh;
     }
 
     .container {
